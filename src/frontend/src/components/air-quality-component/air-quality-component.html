@@ -1,0 +1,58 @@
+<div class="min-h-screen flex flex-col items-center pt-10 px-4 text-center">
+
+  <!-- Logo + Title -->
+  <div class="flex items-center gap-2 mb-3">
+    <span class="text-5xl">☁️</span>
+    <h1 class="text-4xl font-semibold text-gray-900">Air Quality Monitor</h1>
+  </div>
+
+  <p class="text-gray-600 text-lg mb-10">
+    Search for any city to view real-time air quality data and detailed pollutant measurements
+  </p>
+
+  <!-- Search Box -->
+  <div class="flex w-full max-w-2xl">
+    <input
+      [(ngModel)]="city"
+      (keyup.enter)="search()"
+      type="text"
+      placeholder="Enter city name..."
+      class="flex-1 px-5 py-4 border border-gray-300 rounded-l-xl text-lg shadow-sm focus:outline-none"
+    />
+
+    <button
+      (click)="search()"
+      [disabled]="loading || !(city && city.trim().length)"
+      [attr.aria-busy]="loading"
+      class="px-6 flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium rounded-r-xl"
+    >
+      <span class="text-xl">🔍</span>
+      Search
+    </button>
+  </div>
+
+  <!-- Message -->
+  <div class="mt-8 w-full max-w-3xl">
+    <!-- Error -->
+    <div *ngIf="error" class="mb-6 text-center text-red-600 font-semibold">
+      {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="py-12 flex flex-col items-center gap-3">
+      <div class="w-12 h-12 border-4 border-gray-300 border-t-indigo-500 rounded-full animate-spin"></div>
+      <p class="text-gray-600">Fetching latest air quality data... </p>
+    </div>
+
+    <!-- Result Card -->
+    <div *ngIf="aqi">
+      <app-air-quality-card [data]="aqi"></app-air-quality-card>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!aqi && !loading && !error" class="mt-16 text-center text-gray-500">
+      <h2 class="text-2xl font-medium">Enter a city name to get started</h2>
+      <p class="mt-3">Try searching for major cities like London, Paris, or New York</p>
+    </div>
+  </div>
+</div>

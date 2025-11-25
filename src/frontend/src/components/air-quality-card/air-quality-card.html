@@ -1,0 +1,67 @@
+<div class="flex flex-row gap-6 flex-wrap justify-center">
+  <div
+    class="max-w-lg  bg-gradient-to-br from-indigo-500 to-pink-400 shadow-2xl rounded-3xl p-1 animate-fade-in"
+  >
+    <div class="bg-white rounded-3xl p-6 ">
+      <h2 class="text-3xl font-bold text-gray-800 mb-2 text-center drop-shadow">
+        {{ data.city }}, {{ data.country }}
+      </h2>
+      <p class="text-center text-gray-500 mb-4">
+        {{ data.coordinates[0] }}, {{ data.coordinates[1] }}
+      </p>
+
+      <div class="flex justify-center mb-6">
+        <div class="relative w-30 h-30 flex items-center justify-center">
+          <div
+            class="absolute inset-0 rounded-full border-8"
+            [ngClass]="gaugeBorder(data.aqi)"
+          ></div>
+          <div
+            class="absolute w-28 h-28 bg-white rounded-full shadow-inner flex items-center justify-center"
+          >
+            <span class="text-4xl font-extrabold" [ngClass]="colorClass(data.aqi)">{{
+              data.aqi
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-center font-semibold text-xl mb-6" [ngClass]="colorClass(data.aqi)">
+        {{ aqiStatus(data.aqi) }}
+      </p>
+
+      <div class="bg-gray-50 p-4 rounded-xl shadow" *ngIf="data.weather">
+        <h3 class="font-semibold text-gray-700 mb-3 text-lg">Weather Details</h3>
+        <div class="flex flex-wrap gap-3">
+          <span
+            *ngFor="let w of weatherKeys(data.weather)"
+            class="px-4 py-2 bg-white rounded-xl shadow text-gray-700 font-medium transform transition hover:scale-105"
+          >
+            {{ w }}: <b>{{ data.weather[w] }}</b>
+          </span>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <div>
+    <div class="bg-gray-50 p-4 rounded-xl shadow mb-4">
+      <h3 class="font-semibold text-gray-700 mb-3 text-lg">Pollutants</h3>
+      <div class="grid grid-cols-2 gap-3">
+        <div
+          *ngFor="let key of pollutantKeys(data.pollutants)"
+          class="flex justify-between bg-white rounded-xl shadow p-3 transform transition hover:scale-105"
+        >
+          <span class="font-medium text-gray-700">{{ key.toUpperCase() }}</span>
+          <span class="font-bold text-gray-900">{{  data.pollutants[key] }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <p class="text-center text-gray-500 mt-6">Last updated: {{ data.time }}</p>
+</div>
